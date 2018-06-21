@@ -1,0 +1,57 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        var BaseUrl = "@Url.Content("~")";
+        $(document).ready(function () {
+            function SearchBooks() {
+                $("#tbody").empty();
+                $.getJSON(BaseUrl + "api/books/getbooks?SearchString=" + $("#SearchText").val(), function (books) {
+                    $.each(books, function (i, book) {
+                        $("#tbody").append("<tr><td>" + book.book.title + "</td><td>" + book.book.author + "</td><td>" + book.book.genre + "</td><td>" + book.book.price + "</td><td>" + book.book.publish_date + "</td><td>" + book.book.description + "</td></tr> ");
+                    });
+                });
+            }
+
+            SearchBooks();
+
+            $("#btnSearch").on("click", function () {
+                SearchBooks();
+            });
+
+            $("#btnClear").on("click", function () {
+                $("#SearchText").val("");
+                SearchBooks();
+            });
+
+        });
+    </script>
+</head>
+<body>
+    <div>
+        <input type="text" id="SearchText" /><input type="button" id="btnSearch" value="Search" /><input type="button" id="btnClear" value="Clear" />
+        <table style="width:100%" cellpadding="3" border="1">
+            <thead>
+                <tr>
+                    <th>title</th>
+                    <th>author</th>
+                    <th>genre</th>
+                    <th>price</th>
+                    <th>publish_date</th>
+                    <th>description</th>
+                </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+        </table>
+    </div>
+</body>
+</html>
